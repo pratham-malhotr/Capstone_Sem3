@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String    @default("")
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now()) @map("created_at")
+  history   History[]
+  watchlist Watchlist[]
+  alerts    PriceAlert[]
+
+  @@map("users")
+}
+
+model History {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  fromSymbol String   @map("from_symbol")
+  toSymbol  String    @map("to_symbol")
+  amountFrom Decimal  @map("amount_from") @db.Decimal(20, 8)
+  amountTo  Decimal   @map("amount_to") @db.Decimal(20, 8)
+  priceUsd  Decimal   @map("price_usd") @db.Decimal(20, 8)
+  note      String?   @db.Text
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], name: "idx_user_id")
+  @@index([createdAt], name: "idx_created_at")
+  @@index([fromSymbol, toSymbol], name: "idx_symbols")
+  @@map("history")
+}
+
+model Watchlist {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @map("user_id")
+  symbol    String
+  coinName  String    @map("coin_name")
+  note      String?   @db.Text
+  createdAt DateTime  @default(now()) @map("created_at")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, symbol])
+  @@index([userId], name: "idx_watchlist_user_id")
+  @@index([symbol], name: "idx_watchlist_symbol")
+  @@index([createdAt], name: "idx_watchlist_created_at")
+  @@map("watchlist")
+}
+
+model PriceAlert {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  symbol      String
+  coinName    String    @map("coin_name")
+  targetPrice Decimal   @map("target_price") @db.Decimal(20, 8)
+  condition   String    // "above" or "below"
+  isActive    Boolean   @default(true) @map("is_active")
+  triggeredAt DateTime? @map("triggered_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], name: "idx_alert_user_id")
+  @@index([symbol], name: "idx_alert_symbol")
+  @@index([isActive], name: "idx_alert_is_active")
+  @@index([createdAt], name: "idx_alert_created_at")
+  @@map("price_alerts")
+}
