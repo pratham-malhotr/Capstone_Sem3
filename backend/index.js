@@ -11,7 +11,12 @@ const alertsRoutes = require('./routes/alerts');
 const prisma = require('./db');
 
 const app = express();
-app.use(cors());
+// CORS configuration - allow frontend URL in production
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || process.env.VITE_API_URL || '*',
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);

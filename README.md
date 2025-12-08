@@ -44,24 +44,28 @@ bitport/
 │   │   ├── history.js        # History CRUD routes
 │   │   └── profile.js        # Profile routes
 │   └── package.json
-├── src/
-│   ├── components/
-│   │   ├── Navbar.jsx        # Navigation component
-│   │   └── ProtectedRoute.jsx # Route protection
-│   ├── context/
-│   │   └── AuthContext.jsx   # Authentication context
-│   ├── pages/
-│   │   ├── Home.jsx          # Home page
-│   │   ├── Login.jsx         # Login page
-│   │   ├── Register.jsx      # Registration page
-│   │   ├── Swap.jsx          # Swap page
-│   │   ├── History.jsx       # History page
-│   │   └── Profile.jsx       # Profile page
-│   ├── utils/
-│   │   └── api.js            # API utility
-│   ├── App.jsx               # Main app component
-│   └── main.jsx             # Entry point
-└── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx        # Navigation component
+│   │   │   └── ProtectedRoute.jsx # Route protection
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx   # Authentication context
+│   │   ├── pages/
+│   │   │   ├── Home.jsx          # Home page
+│   │   │   ├── Login.jsx         # Login page
+│   │   │   ├── Register.jsx      # Registration page
+│   │   │   ├── Swap.jsx          # Swap page
+│   │   │   ├── History.jsx       # History page
+│   │   │   └── Profile.jsx       # Profile page
+│   │   ├── utils/
+│   │   │   └── api.js            # API utility
+│   │   ├── App.jsx               # Main app component
+│   │   └── main.jsx             # Entry point
+│   ├── index.html
+│   ├── vite.config.js
+│   └── package.json
+└── render.yaml
 ```
 
 ## Setup Instructions
@@ -111,9 +115,9 @@ The backend will run on `http://localhost:4000`
 
 ### Frontend Setup
 
-1. Navigate to the root directory (or frontend if separated):
+1. Navigate to the frontend directory:
 ```bash
-cd bitport
+cd frontend
 ```
 
 2. Install dependencies:
@@ -121,7 +125,7 @@ cd bitport
 npm install
 ```
 
-3. Create a `.env` file in the root directory:
+3. Create a `.env` file in the frontend directory:
 ```env
 VITE_API_URL=http://localhost:4000
 ```
@@ -169,7 +173,7 @@ vercel login
 
 3. **Navigate to the frontend directory**:
 ```bash
-cd bitport
+cd frontend
 ```
 
 4. **Deploy**:
@@ -191,7 +195,7 @@ vercel --prod
 1. Push your code to GitHub
 2. Go to [vercel.com](https://vercel.com)
 3. Import your repository
-4. Set root directory to `bitport` (or wherever your frontend is)
+4. Set root directory to `bitport/frontend`
 5. Add environment variable: `VITE_API_URL`
 6. Deploy
 
@@ -287,7 +291,7 @@ VITE_API_URL=http://localhost:4000  # Backend API URL
 
 1. Start MySQL server
 2. Run backend: `cd backend && npm start`
-3. Run frontend: `npm run dev`
+3. Run frontend: `cd frontend && npm run dev`
 4. Open browser to `http://localhost:5173`
 
 ### Testing
